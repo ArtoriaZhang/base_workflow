@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.els.base.workflow.wfSet.dao.WfSetMapper" >
+  <resultMap id="BaseResultMap" type="com.els.base.workflow.wfSet.entity.WfSet" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CURRENT_PROCESS" property="currentProcess" jdbcType="VARCHAR" />
+    <result column="CONDITION_SET_UP" property="conditionSetUp" jdbcType="DECIMAL" />
+    <result column="CONDITION_" property="condition" jdbcType="VARCHAR" />
+    <result column="APPROVE_GROUP" property="approveGroup" jdbcType="VARCHAR" />
+    <result column="APPROVE_ASSIGNEE" property="approveAssignee" jdbcType="VARCHAR" />
+    <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="ASSIGNEE_ID" property="assigneeId" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="DEPLOYMENT_ID" property="deploymentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, CURRENT_PROCESS, CONDITION_SET_UP, CONDITION_, APPROVE_GROUP, APPROVE_ASSIGNEE, 
+    GROUP_ID, ASSIGNEE_ID, REMARK, DEPLOYMENT_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.els.base.workflow.wfSet.entity.WfSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_BASE_WF_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from T_BASE_WF_SET
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from T_BASE_WF_SET
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.els.base.workflow.wfSet.entity.WfSetExample" >
+    delete from T_BASE_WF_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.els.base.workflow.wfSet.entity.WfSet" >
+    <bind name="_uuid" value="@com.els.base.utils.uuid.UUIDGenerator@generateUUIDAndSetId(#this)"/>
+    insert into T_BASE_WF_SET (ID, CURRENT_PROCESS, CONDITION_SET_UP, 
+      CONDITION_, APPROVE_GROUP, APPROVE_ASSIGNEE, 
+      GROUP_ID, ASSIGNEE_ID, REMARK, 
+      DEPLOYMENT_ID)
+    values (#{_uuid}, #{currentProcess,jdbcType=VARCHAR}, #{conditionSetUp,jdbcType=DECIMAL}, 
+      #{condition,jdbcType=VARCHAR}, #{approveGroup,jdbcType=VARCHAR}, #{approveAssignee,jdbcType=VARCHAR}, 
+      #{groupId,jdbcType=VARCHAR}, #{assigneeId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{deploymentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.els.base.workflow.wfSet.entity.WfSet" >
+    <bind name="_uuid" value="@com.els.base.utils.uuid.UUIDGenerator@generateUUIDAndSetId(#this)"/>
+    insert into T_BASE_WF_SET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ID,
+      <if test="currentProcess != null" >
+        CURRENT_PROCESS,
+      </if>
+      <if test="conditionSetUp != null" >
+        CONDITION_SET_UP,
+      </if>
+      <if test="condition != null" >
+        CONDITION_,
+      </if>
+      <if test="approveGroup != null" >
+        APPROVE_GROUP,
+      </if>
+      <if test="approveAssignee != null" >
+        APPROVE_ASSIGNEE,
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="assigneeId != null" >
+        ASSIGNEE_ID,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="deploymentId != null" >
+        DEPLOYMENT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{_uuid},
+      <if test="currentProcess != null" >
+        #{currentProcess,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionSetUp != null" >
+        #{conditionSetUp,jdbcType=DECIMAL},
+      </if>
+      <if test="condition != null" >
+        #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="approveGroup != null" >
+        #{approveGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="approveAssignee != null" >
+        #{approveAssignee,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeId != null" >
+        #{assigneeId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deploymentId != null" >
+        #{deploymentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.els.base.workflow.wfSet.entity.WfSetExample" resultType="java.lang.Integer" >
+    select count(*) from T_BASE_WF_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update T_BASE_WF_SET
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentProcess != null" >
+        CURRENT_PROCESS = #{record.currentProcess,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conditionSetUp != null" >
+        CONDITION_SET_UP = #{record.conditionSetUp,jdbcType=DECIMAL},
+      </if>
+      <if test="record.condition != null" >
+        CONDITION_ = #{record.condition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveGroup != null" >
+        APPROVE_GROUP = #{record.approveGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveAssignee != null" >
+        APPROVE_ASSIGNEE = #{record.approveAssignee,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null" >
+        GROUP_ID = #{record.groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assigneeId != null" >
+        ASSIGNEE_ID = #{record.assigneeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deploymentId != null" >
+        DEPLOYMENT_ID = #{record.deploymentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update T_BASE_WF_SET
+    set ID = #{record.id,jdbcType=VARCHAR},
+      CURRENT_PROCESS = #{record.currentProcess,jdbcType=VARCHAR},
+      CONDITION_SET_UP = #{record.conditionSetUp,jdbcType=DECIMAL},
+      CONDITION_ = #{record.condition,jdbcType=VARCHAR},
+      APPROVE_GROUP = #{record.approveGroup,jdbcType=VARCHAR},
+      APPROVE_ASSIGNEE = #{record.approveAssignee,jdbcType=VARCHAR},
+      GROUP_ID = #{record.groupId,jdbcType=VARCHAR},
+      ASSIGNEE_ID = #{record.assigneeId,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      DEPLOYMENT_ID = #{record.deploymentId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.els.base.workflow.wfSet.entity.WfSet" >
+    update T_BASE_WF_SET
+    <set >
+      <if test="currentProcess != null" >
+        CURRENT_PROCESS = #{currentProcess,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionSetUp != null" >
+        CONDITION_SET_UP = #{conditionSetUp,jdbcType=DECIMAL},
+      </if>
+      <if test="condition != null" >
+        CONDITION_ = #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="approveGroup != null" >
+        APPROVE_GROUP = #{approveGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="approveAssignee != null" >
+        APPROVE_ASSIGNEE = #{approveAssignee,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeId != null" >
+        ASSIGNEE_ID = #{assigneeId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="deploymentId != null" >
+        DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.els.base.workflow.wfSet.entity.WfSet" >
+    update T_BASE_WF_SET
+    set CURRENT_PROCESS = #{currentProcess,jdbcType=VARCHAR},
+      CONDITION_SET_UP = #{conditionSetUp,jdbcType=DECIMAL},
+      CONDITION_ = #{condition,jdbcType=VARCHAR},
+      APPROVE_GROUP = #{approveGroup,jdbcType=VARCHAR},
+      APPROVE_ASSIGNEE = #{approveAssignee,jdbcType=VARCHAR},
+      GROUP_ID = #{groupId,jdbcType=VARCHAR},
+      ASSIGNEE_ID = #{assigneeId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByExampleByPage" resultMap="BaseResultMap" parameterType="com.els.base.workflow.wfSet.entity.WfSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_BASE_WF_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
